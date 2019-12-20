@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Flex, Carousel, WingBlank, WhiteSpace } from 'antd-mobile';
+import { HouseList } from '../../apis/apis'
+import HouseItem from '../../components/HouseList'
 export default class home extends Component {
 
     state = {
@@ -22,6 +24,7 @@ export default class home extends Component {
             { name: '知识', img: 'maozi.png' },
             { name: '扫一扫', img: 'saoyisao.png' },
         ],
+        Houselist: []
     }
 
     componentDidMount() {
@@ -34,8 +37,14 @@ export default class home extends Component {
                 }
             })
         })
+        HouseList().then(res => {
+            this.setState({ Houselist: res.data })
+        })
 
     }
+
+
+
     render() {
         return (
             <div>
@@ -93,12 +102,12 @@ export default class home extends Component {
                     </Flex>
                 </Flex>
                 <WhiteSpace size="lg" />
-                <div style={{ background: '#fff',padding:'18px' }}>
+                <div style={{ background: '#fff', padding: '18px' }}>
                     <Flex align='baseline'>
                         <span style={{ color: '#0BBF62', fontWeight: '700', fontSize: '20px' }}>房产全百科</span>
                         <span style={{ color: '#A0A0A0', marginLeft: '6px' }}>专业的买房攻略</span>
                     </Flex>
-                    <Flex justify='between' style={{marginTop:'10   px'}}>
+                    <Flex justify='between' style={{ marginTop: '10   px' }}>
                         {
                             this.state.gn.map((item, key) => {
                                 return (
@@ -113,14 +122,16 @@ export default class home extends Component {
                     </Flex>
                 </div>
                 <WhiteSpace size="lg" />
-                <div style={{background:'#fff',padding:'10px'}}>
-                    <span style={{fontSize:'16px',margin:'0 0 12px 6px'}}>猜你喜欢</span>
-                    <Flex justify='between'>
-                        <Flex>
-                            <img src={require(`../../assets/imgs/lvdi.jpg`)} style={{width:'100px',height:'100px'}}/>
-                        </Flex>
-                        <Flex></Flex>
-                    </Flex>
+                <div style={{ background: '#fff', padding: '10px' }}>
+                    <span style={{ fontSize: '16px', margin: '0 0 12px 6px' }}>猜你喜欢</span>
+                    {
+                        this.state.Houselist.map((item) => {
+                            return(
+                                <HouseItem key={item.id} item={item}></HouseItem>
+
+                            )
+                        })
+                    }
                 </div>
             </div>
         )
